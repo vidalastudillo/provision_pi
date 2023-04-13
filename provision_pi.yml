@@ -1,0 +1,36 @@
+##
+## Copyright (c) 2023 VIDAL & ASTUDILLO Ltda and others.
+##
+## This program and the accompanying materials are made available under the
+## terms of the MIT License which accompanies this distribution, and is 
+## available at:
+## https://github.com/vidalastudillo/provision_pi/blob/main/LICENSE
+##
+
+
+version: '3.5'
+
+services:
+  provision_pi:
+    container_name: ${PI_PROJECT_NAME}_provision_pi
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: ${PI_BASE_FILE_NAME}.Dockerfile
+    hostname: provision_pi.local
+    networks:
+      - provision_pi
+    environment:
+      - PUID=${PI_HOST_PUID}
+      - PGID=${PI_HOST_PGID}
+      - TZ=${PI_TIMEZONE}
+    volumes:
+      - ${PI_HOST_DATA_PATH}:/root/data
+    devices:
+      - ${PI_USB_PATH}:/dev/pi_port
+
+networks:
+  provision_pi:
+    name: ${PI_PROJECT_NAME}_provision_pi
