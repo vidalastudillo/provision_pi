@@ -94,10 +94,10 @@ Note the prompt `root@provision_pi` in your terminal, which means you are inside
 
 ### To deploy `usbboot` inside the container
 
-Switch to the persistent folder
+Make sure you are inside the persistent folder, which is the home of the user. The user is the one you selected in the `.env` file.
 
 ``` shell
-cd /root/data
+cd /home/pi
 ```
 
 Based on the instructions from https://github.com/raspberrypi/usbboot build `usbboot` and enjoy!
