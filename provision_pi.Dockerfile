@@ -8,7 +8,12 @@
 ##
 
 
-FROM debian:bullseye-slim
+# Python on Debian, to allow running certain scripts, like ./update-pieeprom.sh
+FROM python:3.11-slim-bullseye
+
+# If those Python scripts are not required this can be an alterantive
+# FROM debian:bullseye-slim
+
 
 
 # Enviroment variables retrieved from the compose file
@@ -21,6 +26,7 @@ ARG PI_HOST_PGID
 #  - build-essential and make, to build usbboot
 #  - nano: to edit text files
 #  - git: to download usboot
+#  - wget: to download files, like images
 #  - bash: for scripting
 #  - strace: to diagnose https://strace.io
 #  - usbutils: that provides lsusb
@@ -33,6 +39,7 @@ RUN apt-get update && \
     make \
     nano \
     git \
+    wget \
     bash \
     strace \
     usbutils \
@@ -44,3 +51,5 @@ RUN apt-get update && \
 RUN useradd -m -d /home/$PI_USERNAME -s /bin/bash -g root -G sudo -u $PI_HOST_PUID $PI_USERNAME -p "$(openssl passwd -1 "${PI_PASSWORD}")"
 USER $PI_USERNAME
 WORKDIR /home/$PI_USERNAME
+
+CMD ["/bin/bash"]
