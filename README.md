@@ -59,6 +59,18 @@ cp template.env .env
 nano .env
 ```
 
+4. Create the folder in your host to store the persistent home folder for the user
+
+ie. mkdir pi
+
+The name of the folder should be the same of the username you selected in the configuration, as this is the home folder of the user.
+
+If this is not done before launching the container for the first time, docker will create with owner root, and you'll get issues with user permissions. To fix it, issue this in your host to change the ownership of the folder:
+
+chown <the user id>:<the group id> <the path to the home user>
+
+ie: chwon 1000:1000 ./pi
+
 
 # Use
 
@@ -110,6 +122,7 @@ https://stackoverflow.com/questions/24225647/docker-a-way-to-give-access-to-a-ho
 
 http://marc.merlins.org/perso/linux/post_2018-12-20_Accessing-USB-Devices-In-Docker-_ttyUSB0_-dev-bus-usb-_-for-fastboot_-adb_-without-using-privileged.html
 
+https://stackoverflow.com/a/53892718/15786299
 
 ### Sharing devices (webcam, USB drives, etc) with Docker
 

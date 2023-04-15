@@ -19,6 +19,11 @@ services:
     build:
       context: .
       dockerfile: ${PI_BASE_FILE_NAME}.Dockerfile
+      args:
+        PI_USERNAME: ${PI_USERNAME?No username set}
+        PI_PASSWORD: ${PI_PASSWORD}
+        PI_HOST_PUID: ${PI_HOST_PUID}
+        PI_HOST_PGID: ${PI_HOST_PGID}
     cap_add:
       - SYS_PTRACE  # To allow strace to debug access problems
     hostname: provision_pi.local
@@ -31,7 +36,7 @@ services:
     device_cgroup_rules:
       - 'c ${PI_DRIVER_MAJOR_VERSION}:* rmw'  # To enable access to the Pi Driver
     volumes:
-      - ${PI_HOST_DATA_PATH}:/root/data  # Persistent data
+      - ${PI_HOST_DATA_PATH?No data path set}/${PI_USERNAME?No username set}:/home/${PI_USERNAME?No username set}  # The user home is considered persistent data
       - /dev:/dev  # To mount /bus/usb and /sd* folders 
       - /run/udev:/run/udev:ro  # udev information
 
